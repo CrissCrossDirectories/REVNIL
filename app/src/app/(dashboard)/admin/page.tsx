@@ -11,16 +11,19 @@ export default function OrganizationAdminPage() {
     <AuthGuard policy={ADMIN_POLICY}>
       <main className="space-y-8">
         <PageHeader
-          title="Organization Admin"
-          subtitle="Manage role assignments, sport-level permissions, and organization access governance."
+          eyebrow="Governance"
+          title="Organization Governance"
+          subtitle="Control role assignments, sport visibility boundaries, and permission audit posture."
+          metadata="Last sync: 8:38 AM CT · Source: identity claims + org policy · Audit trail available"
         />
 
         <EmptyState
-          title="Admin workspace initialized"
-          description="This section is now routed and protected. In the next slice, it will include editable users, role matrix controls, and sport assignment workflows for coaches and staff."
+          title="Governance workspace is routed and protected"
+          description="No active governance tasks require execution in this prototype snapshot."
+          guidance="Next action: open role matrix controls and verify permission explainability for each coach and staff account before weekly lock."
+          metadata="Decision owner: Org Admin · Confidence: High · Evidence: Access claim logs"
         />
       </main>
     </AuthGuard>
   );
 }
-

@@ -18,23 +18,25 @@ export default function OrganizationConfigurationPage() {
     <AuthGuard policy={ORG_CONFIG_POLICY}>
       <main className="space-y-8">
         <PageHeader
+          eyebrow="Implementation Controls"
           title="Organization Configuration"
-          subtitle="Configure organization-specific templates, import mappings, and operational files scoped to this university."
+          subtitle="Manage institution templates, import mappings, and compliance artifacts used in daily operations."
+          metadata="Last sync: 8:38 AM CT · Source: org config registry · Audit trail available"
         />
 
         <Card>
           <CardHeader>
-            <CardTitle>Organization-scoped templates and files</CardTitle>
+            <CardTitle>Institution-scoped templates and artifacts</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {SAMPLE_IMPORT_TEMPLATES.map((item) => (
               <div
                 key={item.name}
-                className="flex flex-col gap-2 rounded-md border border-border bg-card p-3 md:flex-row md:items-center md:justify-between"
+                className="motion-standard flex flex-col gap-2 rounded-lg bg-card p-3 ring-1 ring-border/60 md:flex-row md:items-center md:justify-between hover:-translate-y-0.5 hover:shadow-soft"
               >
                 <div>
                   <p className="font-medium text-foreground">{item.name}</p>
-                  <p className="text-sm text-muted-foreground">Module: {item.module}</p>
+                  <p className="text-sm text-muted-foreground">Operational module: {item.module}</p>
                 </div>
                 <Badge variant="outline">{item.type}</Badge>
               </div>
@@ -45,4 +47,3 @@ export default function OrganizationConfigurationPage() {
     </AuthGuard>
   );
 }
-

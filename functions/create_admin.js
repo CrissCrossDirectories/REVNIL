@@ -31,12 +31,12 @@ async function createAdmin() {
       }
     }
 
-    // Set custom claims
+    // Set custom claims suitable for "org_admin"
     const claims = {
       platformAdmin: true,
       role: 'org_admin',
-      tenantType: 'institution', // Satisfy TenantClaims type if used elsewhere
-      tenantId: 'platform_revnil',
+      tenantType: 'institution', 
+      tenantId: 'inst_ou', // Use a realistic institution ID (Oklahoma, from seed)
       sportIds: []
     };
 

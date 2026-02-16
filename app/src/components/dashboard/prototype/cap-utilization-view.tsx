@@ -13,18 +13,22 @@ export function CapUtilizationView() {
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 
   return (
-    <Card className="w-full">
+    <Card className="w-full hover:-translate-y-0.5 hover:shadow-elevated motion-standard">
       <CardHeader>
-        <CardTitle className="text-xl font-bold">Cap Allocation Status</CardTitle>
+        <p className="eyebrow-label">Cap Exposure</p>
+        <CardTitle>House Settlement Allocation Status</CardTitle>
+        <p className="confidence-meta">
+          Last sync: 8:38 AM CT · Source: CAPS import (seed) · Audit trail available
+        </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-sm font-medium text-muted-foreground">Total House Cap</p>
+            <p className="text-sm font-medium text-muted-foreground">Approved cap ceiling</p>
             <p className="text-3xl font-bold">{formatCurrency(capData.totalCap)}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm font-medium text-muted-foreground">Allocated to Date</p>
+            <p className="text-sm font-medium text-muted-foreground">Committed allocations</p>
             <p className="text-2xl font-semibold text-primary">{formatCurrency(capData.allocated)}</p>
           </div>
         </div>
@@ -37,8 +41,8 @@ export function CapUtilizationView() {
         </div>
 
         <div className="flex justify-between text-sm">
-          <span className="font-medium">{percentUsed.toFixed(1)}% Used</span>
-          <span className="text-muted-foreground">{formatCurrency(capData.totalCap - capData.allocated)} Remaining</span>
+          <span className="font-medium">{percentUsed.toFixed(1)}% committed</span>
+          <span className="text-muted-foreground">{formatCurrency(capData.totalCap - capData.allocated)} remaining capacity</span>
         </div>
       </CardContent>
     </Card>

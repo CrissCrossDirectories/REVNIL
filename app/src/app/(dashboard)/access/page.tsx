@@ -18,8 +18,10 @@ export default function SportsAccessPage() {
     <AuthGuard policy={ACCESS_POLICY}>
       <main className="space-y-8">
         <PageHeader
-          title="Sports Access"
-          subtitle="Visibility model: org_admin and AD leadership see all sports. Coaches and staff see assigned sports only."
+          eyebrow="Permission Explainability"
+          title="Sport Access Matrix"
+          subtitle="Explain who can view each sport, why access is granted, and where governance intervention is required."
+          metadata="Last sync: 8:38 AM CT · Source: role claims + sport assignments · Audit trail available"
         />
 
         <Card>
@@ -30,11 +32,11 @@ export default function SportsAccessPage() {
             {SAMPLE_ACCESS.map((entry) => (
               <div
                 key={entry.name}
-                className="flex flex-col gap-2 rounded-md border border-border bg-card p-3 md:flex-row md:items-center md:justify-between"
+                className="motion-standard flex flex-col gap-2 rounded-lg bg-card p-3 ring-1 ring-border/60 md:flex-row md:items-center md:justify-between hover:-translate-y-0.5 hover:shadow-soft"
               >
                 <div>
                   <p className="font-medium text-foreground">{entry.name}</p>
-                  <p className="text-sm text-muted-foreground">{entry.sports}</p>
+                  <p className="text-sm text-muted-foreground">Sport scope: {entry.sports}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline">{entry.role}</Badge>
@@ -48,4 +50,3 @@ export default function SportsAccessPage() {
     </AuthGuard>
   );
 }
-

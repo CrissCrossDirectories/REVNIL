@@ -36,6 +36,15 @@
   --background: 220 20% 6%;
   --foreground: 140 20% 94%;
 
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
   --card: 220 18% 10%;
   --card-foreground: 140 16% 93%;
 
@@ -69,6 +78,11 @@
     0 1px 1px -1px rgb(2 6 23 / 0.5);
   --shadow-elevated: 0 10px 18px -6px rgb(2 6 23 / 0.55),
     0 6px 8px -4px rgb(2 6 23 / 0.42);
+
+  --motion-fast: 140ms;
+  --motion-base: 220ms;
+  --motion-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0.65, 0.3, 1);
 }
 
 .dark {
@@ -113,6 +127,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   h1 {
@@ -131,8 +146,37 @@
     @apply leading-7;
   }
 
+  small {
+    @apply text-xs tracking-wide text-muted-foreground;
+  }
+
   :where(button, [role="button"], a, input, textarea, select, [tabindex]):focus-visible {
     outline: 2px solid transparent;
     box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+  }
+}
+
+@layer utilities {
+  .executive-section {
+    @apply space-y-6;
+  }
+
+  .eyebrow-label {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground;
+  }
+
+  .confidence-meta {
+    @apply text-xs text-muted-foreground;
+  }
+
+  .motion-standard {
+    transition-duration: var(--motion-base);
+    transition-timing-function: var(--ease-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-standard {
+      transition: none !important;
+    }
   }
 }
