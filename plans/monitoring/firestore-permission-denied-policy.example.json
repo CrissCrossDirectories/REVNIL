@@ -1,0 +1,23 @@
+{
+  "displayName": "REVNIL - Firestore Permission Denied Spike",
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "Firestore permission denied events high",
+      "conditionThreshold": {
+        "filter": "metric.type=\"logging.googleapis.com/user/revnil_firestore_permission_denied_count\"",
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 20,
+        "duration": "600s",
+        "trigger": { "count": 1 },
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "perSeriesAligner": "ALIGN_RATE"
+          }
+        ]
+      }
+    }
+  ],
+  "notificationChannels": []
+}

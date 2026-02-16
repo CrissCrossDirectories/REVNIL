@@ -1,0 +1,40 @@
+{
+  "name": "revnil",
+  "version": "0.1.0",
+  "private": true,
+  "description": "REVNIL — Multi-tenant ERP platform for collegiate athletics management",
+  "workspaces": [
+    "app",
+    "functions"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=app",
+    "build": "npm run build --workspace=app",
+    "build:functions": "npm run build --workspace=functions",
+    "typecheck": "npm run typecheck --workspace=app && npm run typecheck --workspace=functions",
+    "emulators": "firebase emulators:start",
+    "dev:full": "concurrently --names \"next,emulators\" --prefix-colors \"cyan,yellow\" \"npm run dev\" \"npm run emulators\"",
+    "deploy": "npm run build && npm run build:functions && firebase deploy",
+    "lint": "npm run lint --workspace=app",
+    "ci:lint": "npm run lint",
+    "ci:typecheck": "npm run typecheck",
+    "ci:build": "npm run build && npm run build:functions",
+    "ci:test": "npm run test:rules:ci && npm run test:unit",
+    "ci:verify": "npm run ci:lint && npm run ci:typecheck && npm run ci:build && npm run ci:test",
+    "test:rules": "firebase emulators:exec --only firestore \"vitest run --config vitest.rules.config.ts\"",
+    "test:rules:watch": "firebase emulators:exec --only firestore \"vitest --config vitest.rules.config.ts\"",
+    "test:rules:ci": "firebase emulators:exec --project nil-rev-dev --only firestore \"vitest run --config vitest.rules.config.ts --reporter=dot\"",
+    "test:unit": "vitest run"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "concurrently": "^9.1.2",
+    "firebase": "^12.0.0",
+    "firebase-tools": "^15.6.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

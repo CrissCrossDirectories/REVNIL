@@ -1,0 +1,74 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (must be prod)"
+        required: true
+        type: choice
+        options:
+          - prod
+      confirmation:
+        description: "Type DEPLOY_PRODUCTION to confirm"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Firebase production
+    if: ${{ github.event.inputs.environment == 'prod' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production
+
+    steps:
+      - name: Validate manual confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirmation }}" != "DEPLOY_PRODUCTION" ]; then
+            echo "Confirmation failed. You must type DEPLOY_PRODUCTION."
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify before deploy
+        run: npm run ci:verify
+
+      - name: Deploy hosting, functions, firestore, and storage to production
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npx firebase-tools deploy \
+            --project production \
+            --only hosting,functions,firestore,storage \
+            --non-interactive
+
+      - name: Upload deploy logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-deploy-debug-${{ github.run_id }}
+          if-no-files-found: ignore
+          path: |
+            firestore-debug.log
+            firebase-debug.log
+            firebase-debug.*.log
+

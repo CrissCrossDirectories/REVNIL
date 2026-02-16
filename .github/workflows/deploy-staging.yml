@@ -1,0 +1,58 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Firebase staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: staging
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify before deploy
+        run: npm run ci:verify
+
+      - name: Deploy hosting, functions, firestore, and storage to staging
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          npx firebase-tools deploy \
+            --project staging \
+            --only hosting,functions,firestore,storage \
+            --non-interactive
+
+      - name: Upload deploy logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-deploy-debug-${{ github.run_id }}
+          if-no-files-found: ignore
+          path: |
+            firestore-debug.log
+            firebase-debug.log
+            firebase-debug.*.log
+

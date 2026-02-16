@@ -1,0 +1,23 @@
+{
+  "displayName": "REVNIL - Functions Error Rate High",
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "Functions errors above threshold",
+      "conditionThreshold": {
+        "filter": "metric.type=\"logging.googleapis.com/user/revnil_functions_errors_count\"",
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 10,
+        "duration": "300s",
+        "trigger": { "count": 1 },
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "perSeriesAligner": "ALIGN_RATE"
+          }
+        ]
+      }
+    }
+  ],
+  "notificationChannels": []
+}

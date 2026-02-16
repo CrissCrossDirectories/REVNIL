@@ -1,0 +1,23 @@
+rules_version = '2';
+
+/**
+ * Cloud Storage Security Rules — REVNIL
+ *
+ * CURRENT STATE: All access is denied by default.
+ * This is a placeholder that will be expanded as storage needs
+ * are defined (athlete profile images, deal documents, etc.).
+ *
+ * Future rules will implement:
+ * - Tenant-scoped storage paths
+ * - File type and size validation
+ * - Role-based upload/download permissions
+ * - Authenticated-only access
+ */
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Deny all reads and writes by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

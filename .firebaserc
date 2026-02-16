@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "revnil",
+    "staging": "revnil",
+    "production": "revnil-prod"
+  }
+}
